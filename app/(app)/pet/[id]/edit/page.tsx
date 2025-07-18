@@ -7,7 +7,7 @@ import FormField from "@/components/form/FormField";
 import { Button } from "@/components/ui/button";
 import toast from "react-hot-toast";
 import { useParams, useRouter } from "next/navigation";
-import { getPetById, updatePetPost } from "@/app/actions/pets";
+import { deletePet, getPetById, updatePetPost } from "@/app/actions/pets";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 const EditPetPage = () => {
@@ -82,12 +82,26 @@ const EditPetPage = () => {
           <h1 className="text-2xl font-bold">Pet Details Form {id}</h1>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline">
-            <Link className="w-full h-full" href={`/pet/${id}`}>
+          <Link className="w-full h-full" href={`/pet/${id}`}>
+            <Button variant="outline">
               <Eye className="w-4 h-4" />
-            </Link>
-          </Button>
-          <Button variant="destructive">
+            </Button>
+          </Link>
+          <Button
+            variant="destructive"
+            onClick={() => {
+              deletePet(id).then((res) => {
+                if (res?.success && res?.message) {
+                  toast.success(res.message);
+                  queryClient.invalidateQueries({
+                    queryKey: ["pets", data?.status],
+                    exact: true,
+                  });
+                  router.push("/pet-dashboard");
+                }
+              });
+            }}
+          >
             <Trash className="w-4 h-4" />
           </Button>
         </div>
