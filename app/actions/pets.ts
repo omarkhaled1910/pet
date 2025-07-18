@@ -74,7 +74,7 @@ export const updatePetPost = async (
 ) => {
   try {
     const token = await validateCokkieToken();
-    const res = await apiFetch<Pet>(`/pet/${id}`, {
+    await apiFetch<Pet>(`/pet/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/x-www-form-urlencoded",
@@ -82,7 +82,33 @@ export const updatePetPost = async (
       method: "POST",
       body: pet,
     });
-    return res;
+    return {
+      success: true,
+      message: "Pet updated successfully",
+    };
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const deletePet = async (id: string) => {
+  try {
+    const token = await validateCokkieToken();
+    const res = await apiFetch<{
+      id: number;
+      type: string;
+      message: string;
+    }>(`/pet/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      method: "DELETE",
+    });
+    return {
+      success: true,
+      message: "Pet deleted successfully",
+      id,
+    };
   } catch (error) {
     console.error(error);
   }

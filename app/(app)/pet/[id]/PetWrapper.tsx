@@ -1,5 +1,5 @@
 "use client";
-import { getPetById } from "@/app/actions/pets";
+import { deletePet, getPetById } from "@/app/actions/pets";
 import { useSelectedPetStore } from "@/store/selectedPet";
 import { useQuery } from "@tanstack/react-query";
 import { ArrowBigLeft, Loader2, Pencil, Trash } from "lucide-react";
@@ -10,6 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 // 528970077226004900 error
 const PetWrapper = ({ id }: { id: string }) => {
   const router = useRouter();
@@ -112,7 +113,17 @@ const PetWrapper = ({ id }: { id: string }) => {
               <Pencil className="w-4 h-4" />
             </Link>
           </Button>
-          <Button variant="destructive">
+          <Button
+            variant="destructive"
+            onClick={() => {
+              deletePet(id).then((res) => {
+                if (res?.success && res?.message) {
+                  toast.success(res.message);
+                  router.push("/pet-dashboard");
+                }
+              });
+            }}
+          >
             <Trash className="w-4 h-4" />
           </Button>{" "}
         </div>{" "}
