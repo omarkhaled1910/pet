@@ -50,6 +50,7 @@ const FormField = ({ fieldConfig, form }: FormFieldProps) => {
               options={options}
               id={field.name}
               name={field.name}
+              error={field.state.meta.errors.length > 0}
             />
           ) : (
             <Input
@@ -60,6 +61,7 @@ const FormField = ({ fieldConfig, form }: FormFieldProps) => {
               value={field.state.value}
               onBlur={field.handleBlur}
               onChange={(e) => field.handleChange(e.target.value)}
+              error={field.state.meta.errors.length > 0}
             />
           )}
 

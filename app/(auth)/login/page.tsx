@@ -24,7 +24,9 @@ const LoginPage = () => {
       if (res.success && res.user) {
         toast.success("Login successful");
         setUser(res.user);
-        localStorage.setItem(COOKIE_USER, JSON.stringify(res.user));
+        if (typeof window !== "undefined") {
+          localStorage.setItem(COOKIE_USER, JSON.stringify(res.user));
+        }
         router.push("/pet-dashboard");
         return;
       }

@@ -5,6 +5,7 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
+import { cn } from "@/lib/utils";
 
 interface FormSelectFieldProps {
   value: string;
@@ -14,6 +15,7 @@ interface FormSelectFieldProps {
   options: string[];
   id?: string;
   name?: string;
+  error?: boolean;
 }
 
 export const FormSelectField = ({
@@ -24,10 +26,15 @@ export const FormSelectField = ({
   options,
   id,
   name,
+  error,
 }: FormSelectFieldProps) => {
   return (
     <Select name={name} value={value} onValueChange={onValueChange}>
-      <SelectTrigger id={id} className="w-full" onBlur={onBlur}>
+      <SelectTrigger
+        id={id}
+        className={cn("w-full", error && "border-destructive")}
+        onBlur={onBlur}
+      >
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
       <SelectContent>

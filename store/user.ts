@@ -16,10 +16,22 @@ type Store = {
 
 export const useUserStore = create<Store>((set) => ({
   user: {
-    name: JSON.parse(localStorage.getItem(COOKIE_USER) || "{}").name || "",
+    name:
+      JSON.parse(
+        typeof window !== "undefined"
+          ? localStorage.getItem(COOKIE_USER) || "{}"
+          : "{}"
+      ).name || "",
     username:
-      JSON.parse(localStorage.getItem(COOKIE_USER) || "{}").username || "",
-    token: localStorage.getItem(COOKIE_TOKEN) || "",
+      JSON.parse(
+        typeof window !== "undefined"
+          ? localStorage.getItem(COOKIE_USER) || "{}"
+          : "{}"
+      ).username || "",
+    token:
+      typeof window !== "undefined"
+        ? localStorage.getItem(COOKIE_TOKEN) || ""
+        : "",
   },
   setUser: (user) => set({ user }),
   resetUser: () => set({ user: null }),

@@ -36,7 +36,7 @@ export default function PetCard({ pet }: { pet: Pet }) {
       )}
 
       <CardHeader className="p-0">
-        {pet.photoUrls[0] ? (
+        {true ? (
           <div className="aspect-square relative">
             <Image
               src={"/cute-happy-pup.webp"}
