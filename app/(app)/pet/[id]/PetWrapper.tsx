@@ -9,9 +9,11 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 // 528970077226004900 error
 const PetWrapper = ({ id }: { id: string }) => {
-  const { data, isLoading, error } = useQuery({
+  const router = useRouter();
+  const { data, isLoading, error, refetch } = useQuery({
     queryKey: ["pet", id],
     queryFn: () => getPetById(id),
   });
@@ -23,9 +25,9 @@ const PetWrapper = ({ id }: { id: string }) => {
     return (
       <div className="max-w-4xl mx-auto p-4 md:p-6">
         <header className="flex items-center gap-2 mb-6">
-          <Link href="/pet-dashboard">
+          <div onClick={() => router.back()}>
             <ArrowBigLeft className="w-6 h-6" />
-          </Link>
+          </div>
           <h1 className="text-2xl font-bold">Pet Details</h1>
         </header>
 
@@ -58,9 +60,9 @@ const PetWrapper = ({ id }: { id: string }) => {
     return (
       <div className="max-w-4xl mx-auto p-4 md:p-6">
         <header className="flex items-center gap-2 mb-6">
-          <Link href="/pet-dashboard">
+          <div onClick={() => router.back()}>
             <ArrowBigLeft className="w-6 h-6" />
-          </Link>
+          </div>
           <h1 className="text-2xl font-bold">Pet Details</h1>
         </header>
         <Card className="bg-destructive/10 border-destructive">
@@ -69,8 +71,17 @@ const PetWrapper = ({ id }: { id: string }) => {
           </CardHeader>
           <CardContent>
             <p className="text-destructive">
-              {"Failed to load pet details, please try again later"}
+              {"Failed to load pet details,backend issue 404 please try again"}
             </p>
+            <br />
+            <Button
+              variant="outline"
+              onClick={() => {
+                refetch();
+              }}
+            >
+              Refetch
+            </Button>
           </CardContent>
         </Card>
       </div>
@@ -90,9 +101,9 @@ const PetWrapper = ({ id }: { id: string }) => {
     <div className="max-w-4xl mx-auto p-4 md:p-6">
       <header className="flex items-center justify-between gap-2 mb-6">
         <div className="flex items-center gap-2">
-          <Link href="/pet-dashboard">
+          <div onClick={() => router.back()}>
             <ArrowBigLeft className="w-6 h-6" />
-          </Link>
+          </div>
           <h1 className="text-2xl font-bold">Pet Details</h1>
         </div>
         <div className="flex gap-2">

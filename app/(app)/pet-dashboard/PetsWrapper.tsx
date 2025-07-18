@@ -27,7 +27,6 @@ const PetsWrapper = ({
       ),
     [data, searchTerm]
   );
-  console.log(data);
   return (
     <>
       <div className="max-w-7xl mx-auto">

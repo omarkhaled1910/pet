@@ -13,23 +13,33 @@ export async function apiFetch<T>(
 ): Promise<T | undefined> {
   const { method = "GET", headers = {}, body } = options;
 
+  const isFormData =
+    (headers as any)["Content-Type"] === "application/x-www-form-urlencoded";
+
   const res = await fetch(`${BASE_URL}${endpoint}`, {
     method,
     headers: {
-      // common auth headers goes here
-      "Content-Type": "application/json",
       ...headers,
     },
-    ...(body && { body: JSON.stringify(body) }),
-    cache: "no-store", // or use 'force-cache' / 'no-cache' based on your needs
+    body: isFormData
+      ? new URLSearchParams(body).toString()
+      : body
+      ? JSON.stringify(body)
+      : undefined,
+    cache: "no-store",
   });
-  console.log(res, "res");
+
+  const contentType = res.headers.get("content-type");
 
   if (!res.ok) {
-    const error = await res.text();
-    // throw new Error(`API error (${res.status}): ${error}`);
-    console.error(error, res.status, "error in apiFetch");
+    const errorText = contentType?.includes("application/json")
+      ? await res.json()
+      : await res.text();
+    console.error(errorText, res.status, "error in apiFetch");
+    return;
   }
 
-  return res.json();
+  return contentType?.includes("application/json")
+    ? res.json()
+    : ((await res.text()) as any);
 }

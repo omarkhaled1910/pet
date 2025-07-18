@@ -21,6 +21,7 @@ import { logout } from "@/app/actions/user";
 import { useUserStore } from "@/store/user";
 import { useRouter } from "next/navigation";
 import { ModeToggle } from "../ui/mode-toggle";
+import Link from "next/link";
 const Header = () => {
   const router = useRouter();
   const [isScrolled, setIsScrolled] = useState(false);
@@ -49,7 +50,9 @@ const Header = () => {
     >
       <div className="container mx-auto flex items-center justify-between">
         {/* Logo */}
-        <div className="text-xl font-bold">Pet Store</div>
+        <div className="text-xl font-bold">
+          <Link href="/pet-dashboard">Pet Store</Link>
+        </div>
 
         {/* Navigation */}
         <NavigationMenu>

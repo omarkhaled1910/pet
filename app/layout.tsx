@@ -4,6 +4,7 @@ import "./globals.css";
 import { Providers } from "./providers";
 import { Toaster } from "react-hot-toast";
 import { ThemeProvider } from "next-themes";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,7 +34,7 @@ export default function RootLayout({
         <Toaster position="top-right" reverseOrder={false} />{" "}
         <Providers>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-            {children}
+            <NuqsAdapter>{children}</NuqsAdapter>
             <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center"></footer>
           </ThemeProvider>
         </Providers>

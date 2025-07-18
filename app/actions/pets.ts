@@ -48,3 +48,42 @@ export const getPetById = async (id: string) => {
     console.error(error);
   }
 };
+
+export const updatePetPut = async (id: string, pet: Pet) => {
+  try {
+    const token = await validateCokkieToken();
+    const res = await apiFetch<Pet>(`/pet/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      method: "PUT",
+      body: pet,
+    });
+    return res;
+  } catch (error) {
+    console.error(error);
+  }
+};
+export const updatePetPost = async (
+  id: string,
+  pet: {
+    name: string;
+    status: "available" | "pending" | "sold";
+    petid: number;
+  }
+) => {
+  try {
+    const token = await validateCokkieToken();
+    const res = await apiFetch<Pet>(`/pet/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      method: "POST",
+      body: pet,
+    });
+    return res;
+  } catch (error) {
+    console.error(error);
+  }
+};

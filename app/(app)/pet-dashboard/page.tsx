@@ -9,12 +9,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useQueryState } from "nuqs";
 
 const PetDashboardPage = () => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [status, setStatus] = useState<"available" | "pending" | "sold">(
-    "available"
-  );
+  const [searchTerm, setSearchTerm] = useQueryState("searchTerm", {
+    defaultValue: "",
+  });
+  const [status, setStatus] = useQueryState("status", {
+    defaultValue: "available",
+  });
+
   const deferredQuery = useDeferredValue(searchTerm);
   return (
     <div className="min-h-screen  container mx-auto">
@@ -47,7 +51,10 @@ const PetDashboardPage = () => {
           </Select>
         </div>
       </div>
-      <PetsWrapper searchTerm={deferredQuery} status={status} />
+      <PetsWrapper
+        searchTerm={deferredQuery}
+        status={status as "available" | "pending" | "sold"}
+      />
     </div>
   );
 };

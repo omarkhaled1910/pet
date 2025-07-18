@@ -1,8 +1,8 @@
 import React from "react";
 import FieldInfo from "./FieldInfo";
 import { Input } from "../ui/input";
+import { FormSelectField } from "./FormSelectField";
 
-// Custom types for form field configuration
 type FieldValidator = {
   onChange?: (params: { value: string }) => string | undefined;
   onChangeAsync?: (params: { value: string }) => Promise<string | undefined>;
@@ -12,43 +12,61 @@ type FieldValidator = {
 type FieldConfig = {
   name: string;
   label: string;
-  type?: "text" | "email" | "password" | "number";
+  type?: "text" | "email" | "password" | "number" | "select";
   placeholder?: string;
+  options?: string[];
   validators: FieldValidator;
 };
 
 type FormFieldProps = {
   fieldConfig: FieldConfig;
-  form: any; // Using any for the form prop to avoid external type dependencies
+  form: any;
 };
 
 const FormField = ({ fieldConfig, form }: FormFieldProps) => {
-  const { name, label, type = "text", placeholder, validators } = fieldConfig;
+  const {
+    name,
+    label,
+    type = "text",
+    placeholder,
+    options,
+    validators,
+  } = fieldConfig;
 
   return (
-    <>
-      <form.Field
-        name={name}
-        validators={validators}
-        children={(field: any) => {
-          return (
-            <>
-              <label htmlFor={field.name}>{label}:</label>
-              <Input
-                id={field.name}
-                name={field.name}
-                type={type}
-                placeholder={placeholder}
-                value={field.state.value}
-                onBlur={field.handleBlur}
-                onChange={(e) => field.handleChange(e.target.value)}
-              />
-              <FieldInfo field={field} />
-            </>
-          );
-        }}
-      />
-    </>
+    <form.Field
+      name={name}
+      validators={validators}
+      children={(field: any) => (
+        <div className="grid gap-2">
+          <label htmlFor={field.name}>{label}:</label>
+
+          {type === "select" && options ? (
+            <FormSelectField
+              value={field.state.value}
+              onValueChange={field.handleChange}
+              onBlur={field.handleBlur}
+              placeholder={placeholder}
+              options={options}
+              id={field.name}
+              name={field.name}
+            />
+          ) : (
+            <Input
+              id={field.name}
+              name={field.name}
+              type={type}
+              placeholder={placeholder}
+              value={field.state.value}
+              onBlur={field.handleBlur}
+              onChange={(e) => field.handleChange(e.target.value)}
+            />
+          )}
+
+          <FieldInfo field={field} />
+        </div>
+      )}
+    />
   );
 };
 
