@@ -108,11 +108,11 @@ const PetWrapper = ({ id }: { id: string }) => {
           <h1 className="text-2xl font-bold">Pet Details</h1>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline">
-            <Link className="w-full h-full" href={`/pet/${id}/edit`}>
+          <Link className="w-full h-full" href={`/pet/${id}/edit`}>
+            <Button variant="outline">
               <Pencil className="w-4 h-4" />
-            </Link>
-          </Button>
+            </Button>
+          </Link>
           <Button
             variant="destructive"
             onClick={() => {
