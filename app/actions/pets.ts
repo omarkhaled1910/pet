@@ -3,6 +3,7 @@ import { apiFetch } from "@/apiFetch";
 import { COOKIE_TOKEN } from "@/constants";
 import { validateCokkieToken } from "@/lib/serverUtils";
 import { cookies } from "next/headers";
+import { revalidateTag } from "next/cache";
 
 export type Pet = {
   id: number;
@@ -38,11 +39,15 @@ export const getPetsByStatus = async (
 export const getPetById = async (id: string) => {
   try {
     const token = await validateCokkieToken();
-    const res = await apiFetch<Pet>(`/pet/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
+    const res = await apiFetch<Pet>(
+      `/pet/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       },
-    });
+      [`pet-${id}`]
+    );
     return res;
   } catch (error) {
     console.error(error);
@@ -70,6 +75,7 @@ export const updatePetPost = async (
     name: string;
     status: "available" | "pending" | "sold";
     petid: number;
+    photoUrls?: string[];
   }
 ) => {
   try {
@@ -82,6 +88,7 @@ export const updatePetPost = async (
       method: "POST",
       body: pet,
     });
+    revalidateTag(`pet-${id}`);
     return {
       success: true,
       message: "Pet updated successfully",
