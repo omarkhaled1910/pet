@@ -8,6 +8,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { useUserStore } from "@/store/user";
+import { COOKIE_USER } from "@/constants";
 
 const LoginPage = () => {
   const router = useRouter();
@@ -23,6 +24,7 @@ const LoginPage = () => {
       if (res.success && res.user) {
         toast.success("Login successful");
         setUser(res.user);
+        localStorage.setItem(COOKIE_USER, JSON.stringify(res.user));
         router.push("/pet-dashboard");
         return;
       }

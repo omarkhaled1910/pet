@@ -1,5 +1,6 @@
 // lib/store.ts
 import { create } from "zustand";
+import { COOKIE_TOKEN, COOKIE_USER } from "@/constants";
 
 type User = {
   name: string;
@@ -14,7 +15,12 @@ type Store = {
 };
 
 export const useUserStore = create<Store>((set) => ({
-  user: null,
+  user: {
+    name: JSON.parse(localStorage.getItem(COOKIE_USER) || "{}").name || "",
+    username:
+      JSON.parse(localStorage.getItem(COOKIE_USER) || "{}").username || "",
+    token: localStorage.getItem(COOKIE_TOKEN) || "",
+  },
   setUser: (user) => set({ user }),
   resetUser: () => set({ user: null }),
 }));

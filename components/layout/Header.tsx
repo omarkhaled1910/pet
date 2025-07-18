@@ -22,10 +22,12 @@ import { useUserStore } from "@/store/user";
 import { useRouter } from "next/navigation";
 import { ModeToggle } from "../ui/mode-toggle";
 import Link from "next/link";
+import { COOKIE_TOKEN, COOKIE_USER } from "@/constants";
 const Header = () => {
   const router = useRouter();
   const [isScrolled, setIsScrolled] = useState(false);
-  const { resetUser } = useUserStore();
+  const { resetUser, user } = useUserStore();
+  console.log(user);
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
@@ -36,6 +38,8 @@ const Header = () => {
 
   const handleLogout = async () => {
     await logout();
+    localStorage.removeItem(COOKIE_USER);
+    localStorage.removeItem(COOKIE_TOKEN);
     resetUser();
     router.push("/login");
   };
@@ -84,7 +88,7 @@ const Header = () => {
               </Avatar>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-56">
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuLabel>{user?.name}</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem>Profile</DropdownMenuItem>
               <DropdownMenuItem>Settings</DropdownMenuItem>

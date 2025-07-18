@@ -7,7 +7,7 @@ const AuthHeader = () => {
     <header
       className={cn(
         "w-full px-4 py-3 border-b",
-        "bg-white text-black dark:bg-zinc-900 dark:text-white"
+        "bg-secondary/20  backdrop-blur-md shadow-md text-black  dark:text-white"
       )}
     >
       <div className="container mx-auto flex items-center justify-between">

@@ -3,8 +3,8 @@ import { cookies } from "next/headers";
 import { COOKIE_TOKEN, COOKIE_USER } from "@/constants";
 const users = [
   {
-    username: "admin@1.com",
     name: "Admin",
+    username: "admin@1.com",
     pass: "pass",
     token: "1234567890",
   },
