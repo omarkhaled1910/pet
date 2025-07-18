@@ -10,7 +10,7 @@ type RequestOptions = {
 export async function apiFetch<T>(
   endpoint: string,
   options: RequestOptions = {}
-): Promise<T> {
+): Promise<T | undefined> {
   const { method = "GET", headers = {}, body } = options;
 
   const res = await fetch(`${BASE_URL}${endpoint}`, {
@@ -26,7 +26,8 @@ export async function apiFetch<T>(
 
   if (!res.ok) {
     const error = await res.text();
-    throw new Error(`API error (${res.status}): ${error}`);
+    // throw new Error(`API error (${res.status}): ${error}`);
+    console.error(error, res.status, "error in apiFetch");
   }
 
   return res.json();
