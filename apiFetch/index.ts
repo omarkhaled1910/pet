@@ -9,7 +9,8 @@ type RequestOptions = {
 
 export async function apiFetch<T>(
   endpoint: string,
-  options: RequestOptions = {}
+  options: RequestOptions = {},
+  tags?: string[]
 ): Promise<T | undefined> {
   const { method = "GET", headers = {}, body } = options;
 
@@ -17,6 +18,9 @@ export async function apiFetch<T>(
     (headers as any)["Content-Type"] === "application/x-www-form-urlencoded";
 
   const res = await fetch(`${BASE_URL}${endpoint}`, {
+    next: {
+      tags,
+    },
     method,
     headers: {
       ...headers,
@@ -26,7 +30,7 @@ export async function apiFetch<T>(
       : body
       ? JSON.stringify(body)
       : undefined,
-    cache: "no-store",
+    cache: "no-store", //alwasy fresh data
   });
 
   const contentType = res.headers.get("content-type");
