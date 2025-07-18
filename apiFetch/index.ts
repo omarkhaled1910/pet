@@ -23,6 +23,7 @@ export async function apiFetch<T>(
     ...(body && { body: JSON.stringify(body) }),
     cache: "no-store", // or use 'force-cache' / 'no-cache' based on your needs
   });
+  console.log(res, "res");
 
   if (!res.ok) {
     const error = await res.text();
